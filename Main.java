@@ -20,7 +20,7 @@ public class Main {
         BoardState gb = new BoardState();
 
         for (;;) {
-            for (int i = 0; i < 200; i++) {
+            for (int i = 0; i < 50; i++) {
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
@@ -59,7 +59,23 @@ class Mino {
     }
 
     public void move(int vx) {
-       x += vx; 
+        boolean domove = true;
+        for (int i = 0; i < 4; i++) {
+            try {
+                if (minolit[i*2]+x+vx >= 10 || minolit[i*2]+x+vx < 0) {
+                    domove = false;
+                    System.out.println("ppap");
+                } else if (bs.board[minolit[i*2+1] + y][minolit[i*2]+ x + vx] != 0) {
+                    domove = false;
+                    System.out.println("eae");
+                }
+            } catch(ArrayIndexOutOfBoundsException e) {
+                System.out.println(e);
+            }
+        }
+        if (domove) {
+            x += vx;
+        }
     }
 
     public void update() {
@@ -168,7 +184,6 @@ class KeyDaemon implements KeyListener {
 
     }
     public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyCode());
         switch (e.getKeyCode()) {
             case (68):
                 dh.bstate.amino.rotate(-1, 1);
